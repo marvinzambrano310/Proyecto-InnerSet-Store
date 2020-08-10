@@ -21,12 +21,15 @@ class RequestTableSeeder extends Seeder
         $products = Product::all();
 
         foreach ($users as $user){
+            $subtotal =$faker->randomFloat(2,0.10, 30);
+            $surcharge = $faker->randomFloat(2, 0, 2.00);
+            $total= $surcharge+$subtotal;
             Request::create([
                 'date' => $faker->dateTime,
-                'subtotal' => $faker->randomFloat(2,0.10, 30),
+                'subtotal' => $subtotal,
                 'type' => $faker->randomElement(['withdraw','deliver']),
-                'surcharge' => $faker->randomFloat(2, 0, 2.00),
-                'total' => $faker->randomFloat(2,0.10,30),
+                'surcharge' => $surcharge,
+                'total' => $total,
                 'user_id' => $user->id,
             ]);
         }
@@ -34,11 +37,12 @@ class RequestTableSeeder extends Seeder
         $requests = Request::all();
         foreach($requests as $request){
             for ($i=0;$i<5;$i++) {
+                $quantity =$faker->numberBetween(1,5);
                 DetailRequest::create([
                     'request_id' => $request->id,
                     'product_id' => $faker->numberBetween(1, 20),
-                    'quantity' => $faker->numberBetween(1,5),
-                    'final_price' => $faker->numberBetween(1,5) * $faker->randomFloat(2,0.10,5),
+                    'quantity' => $quantity,
+                    'final_price' => $quantity * $faker->randomFloat(2,0.10,5),
                 ]);
             }
         }
