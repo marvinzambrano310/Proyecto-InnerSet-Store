@@ -15,12 +15,12 @@ class CreateDetailRequestsTable extends Migration
     {
         Schema::create('detail_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('quantity');
-            $table->double('final_price');
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
             $table->unsignedBigInteger('request_id');
             $table->foreign('request_id')->references('id')->on('requests')->onDelete('restrict');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
+            $table->integer('quantity');
+            $table->double('final_price');
             $table->timestamps();
         });
     }
