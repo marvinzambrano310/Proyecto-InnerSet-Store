@@ -3,10 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+
 
 class Request extends Model
 {
-    protected $fillable = ['type'];
+    protected $fillable = ['date','subtotal','type','surcharge','total'];
+
+    public static function boot(){
+        parent::boot();
+
+        static::creating(function ($request) {
+            $request->user_id = Auth::id();
+        });
+    }
 
     public function client()
     {
@@ -17,6 +27,5 @@ class Request extends Model
     {
         return $this->hasMany('App\DetailRequest');
     }
-
 
 }

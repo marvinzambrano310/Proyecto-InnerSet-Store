@@ -35,12 +35,13 @@ class RequestTableSeeder extends Seeder
         }
 
         $requests = Request::all();
+
         foreach($requests as $request){
             for ($i=0;$i<5;$i++) {
                 $quantity =$faker->numberBetween(1,5);
                 DetailRequest::create([
                     'request_id' => $request->id,
-                    'product_id' => $faker->numberBetween(1, 20),
+                    'product_id' => $faker->numberBetween(1, 10),
                     'quantity' => $quantity,
                     'final_price' => $quantity * $faker->randomFloat(2,0.10,5),
                 ]);
