@@ -14,19 +14,19 @@ class ProductTableSeeder extends Seeder
     {
         Product::truncate();
         $faker = \Faker\Factory::create();
-        $users = User::all();
-        foreach ($users as $user){
+        $users = User::first();
+        //foreach ($users as $user){
             // creamos 5 productos por usuario
-            for ($i = 0;$i < 2; $i++){
+            for ($i = 0;$i < 10; $i++){
                 Product::create([
-                    'name' => $faker->name,
+                    'name' => $faker->word,
                     'stock' => $faker->numberBetween(5, 20),
                     'price' => $faker->randomFloat(2, 0.10, 5.00),
                     'image' => $faker->imageUrl(400, 300, null, false),
-                    'user_id' => $user->id,
+                    'user_id' => $users->id,
                     'category_id' => $faker->numberBetween(1, 5),
                 ]);
             }
-        }
+        //}
     }
 }
