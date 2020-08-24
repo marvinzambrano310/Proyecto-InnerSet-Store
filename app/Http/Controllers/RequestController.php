@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 use App\Request as aRequest;
 use Illuminate\Http\Request;
+use App\Http\Resources\Request as RequestResource ;
+use App\Http\Resources\RequestCollection;
 
 class RequestController extends Controller
 {
     public function index()
     {
-        return aRequest::all();
+        return new RequestCollection(aRequest::all());
     }
     public function show (aRequest $request)
     {
-        return $request;
+        return response()->json(new RequestResource($request), 200);
     }
     public function store(Request $request)
     {

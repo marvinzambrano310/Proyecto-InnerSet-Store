@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use App\Http\Resources\Category as CategoryResource ;
+use App\Http\Resources\CategoryCollection;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        return Category::all();
+        return new CategoryCollection(Category::all());
     }
     public function show (Category $category)
     {
-        return $category;
+        return response()->json(new CategoryResource($category), 200);
     }
     public function store(Request $request)
     {

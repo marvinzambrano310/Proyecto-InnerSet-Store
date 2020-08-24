@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\DetailRequest;
+use App\Http\Resources\RequestCollection;
 use Illuminate\Http\Request;
+use App\Http\Resources\DetailRequest as DetailResource ;
+use App\Http\Resources\DetailRequestCollection;
 
 class DetailRequestController extends Controller
 {
     public function index()
     {
-        return DetailRequest::all();
+        return new DetailRequestCollection(DetailRequest::all());
     }
     public function show (DetailRequest $detail)
     {
-        return $detail;
+        return response()->json(new DetailRequest($detail), 200);
     }
     public function store(Request $request)
     {

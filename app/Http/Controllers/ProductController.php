@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use App\Http\Resources\Product as ProductResource ;
+use App\Http\Resources\ProductCollection;
+
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return Product::all();
+        return new ProductCollection(Product::paginate(10));
     }
     public function show (Product $product)
     {
-        return $product;
+        return response()->json(new ProductResource($product), 200);
     }
     public function store(Request $request)
     {
