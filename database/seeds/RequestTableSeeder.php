@@ -5,6 +5,8 @@ use App\User;
 use App\Product;
 use App\Request;
 use App\DetailRequest;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 class RequestTableSeeder extends Seeder
 {
     /**
@@ -21,6 +23,7 @@ class RequestTableSeeder extends Seeder
         $products = Product::all();
 
         foreach ($users as $user){
+            JWTAuth::attempt(['email' => $user->email, 'password' => '123123']);
             $subtotal =$faker->randomFloat(2,0.10, 30);
             $surcharge = $faker->randomFloat(2, 0, 2.00);
             $total= $surcharge+$subtotal;
@@ -30,7 +33,7 @@ class RequestTableSeeder extends Seeder
                 'type' => $faker->randomElement(['withdraw','deliver']),
                 'surcharge' => $surcharge,
                 'total' => $total,
-                'user_id' => $user->id,
+                //'user_id' => $user->id,
             ]);
         }
 

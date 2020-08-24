@@ -15,7 +15,9 @@ class ProductTableSeeder extends Seeder
         Product::truncate();
         $faker = \Faker\Factory::create();
         $users = User::first();
+
         //foreach ($users as $user){
+            JWTAuth::attempt(['email' => $users->email, 'password' => '123123']);
             // creamos 5 productos por usuario
             for ($i = 0;$i < 10; $i++){
                 Product::create([
@@ -23,7 +25,6 @@ class ProductTableSeeder extends Seeder
                     'stock' => $faker->numberBetween(5, 20),
                     'price' => $faker->randomFloat(2, 0.10, 5.00),
                     'image' => $faker->imageUrl(400, 300, null, false),
-                    'user_id' => $users->id,
                     'category_id' => $faker->numberBetween(1, 5),
                 ]);
             }
