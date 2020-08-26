@@ -10,6 +10,14 @@ use App\Http\Resources\ProductCollection;
 
 class ProductController extends Controller
 {
+    private static $messages = [
+        'required'=>'El campo :attribute es obligatorio',
+        'exists'=>'El parámetro :attribute no corresponde a ningun registro',
+        'integer'=>'El parámetro ingresado en :attribute no es un entero',
+        'numeric'=>'El parámetro ingresado en :attribute no es un número',
+        'string'=>'El campo :attribute tiene que ser un string',
+        'image'=>'El campo :attribute no es una imagen',
+    ];
     public function index()
     {
         return new ProductCollection(Product::paginate(10));
@@ -20,11 +28,27 @@ class ProductController extends Controller
     }
     public function store(Request $request)
     {
-        $product = Product::create($request->all());
-        return response()->json($product, 201);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'stock' => 'required|integer',
+            'price' => 'required|numeric',
+            'image' => 'required|image|dimensions:min_width=200,min_height=200',
+            'category_id' => 'required|exists:categories,id',
+        ], self::$messages);
+        $product = new Product($request->all());
+        $path = $request->image->store('public/products');
+        $product->image = $path;
+        $product->save();
+        return response()->json(new ProductResource($product), 201);
     }
     public function update(Request $request, Product $product)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'stock' => 'required|integer',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+        ], self::$messages);
         $product->update($request->all());
         return response()->json($product, 200);
     }
