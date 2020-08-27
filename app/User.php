@@ -20,6 +20,16 @@ class User extends Authenticatable implements JWTSubject
         'name', 'email', 'password',
     ];
 
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_OWNER = 'ROLE_OWNER';
+    const ROLE_CLIENT = 'ROLE_CLIENT';
+
+    private const ROLES_HIERARCHY = [
+        self::ROLE_ADMIN => [self::ROLE_OWNER],
+        self::ROLE_OWNER => [self::ROLE_CLIENT],
+        self::ROLE_CLIENT => []
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -55,5 +65,22 @@ class User extends Authenticatable implements JWTSubject
     public function request()
     {
         return $this->hasMany('App\User');
+    }
+    public function isGranted($role){
+        if ($role === $this->role) {
+            return true;
+        }
+        return self::isRoleInHierarchy($role, self::ROLES_HIERARCHY[$this->role]);
+    }
+    private static function isRoleInHierarchy($role, $role_hierarchy){
+        if (in_array($role, $role_hierarchy)) {
+            return true;
+        }
+        foreach ($role_hierarchy as $role_included) {
+            if(self::isRoleInHierarchy($role,self::ROLES_HIERARCHY[$role_included])){
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -19,9 +19,9 @@ class Product extends JsonResource
             'name' => $this->name,
             'stock' => $this->stock,
             'price' => $this->price,
-            'image' => $this->price,
-            'user_id' => $this->id,
-            'category' => (new CategoryCollection($this->category)),
+            'image' => $this->image,
+            'user' => "api/user".$this->user_id,
+            'category' => "api/categories".$this->category_id,
         ];
     }
 }
