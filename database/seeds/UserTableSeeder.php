@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\Owner;
+use App\Client;
 use Illuminate\Support\Facades\Hash;
 
 class UserTableSeeder extends Seeder
@@ -18,18 +20,27 @@ class UserTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
         $password = Hash::make('123123');
-        User::create([
+        $owner = Owner::create(['store_name' => 'Los Bajitos']);
+        $owner->user()->create([
             'name' => 'Administrador',
             'email' => 'admin@prueba.com',
             'password' => $password,
+            'role' => 'ROLE_ADMIN'
         ]);
 
-        for ($i = 0; $i < 9; $i++) {
-            User::create([
+        // Generar algunos usuarios para nuestra aplicacion
+        for ($i = 0; $i < 10; $i++) {
+            $client = Client::create([
+                'home_number' => $faker->numberBetween(1, 30),
+            ]);
+
+            $client->user()->create([
                 'name' => $faker->name,
                 'email' => $faker->email,
                 'password' => $password,
+                'role' => 'ROLE_CLIENT'
             ]);
+
         }
     }
 }
