@@ -66,6 +66,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany('App\User');
     }
+
     public function isGranted($role){
         if ($role === $this->role) {
             return true;
@@ -82,5 +83,10 @@ class User extends Authenticatable implements JWTSubject
             }
         }
         return false;
+    }
+
+    public function userable()
+    {
+        return $this->morphTo();
     }
 }

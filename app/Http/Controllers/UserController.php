@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -27,19 +28,26 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
+            'home_number' => 'required|numeric|min:1|max:60'
             ]);
         if($validator->fails())
         {
             return response()->json($validator->errors()->toJson(), 400);
         }
-        $user = User::create([
+        //Solo se crean nuevos clientes, no nuevos propietarios
+        $client = Client::create([
+            'home_number' => $request->get('home_number'),
+        ]);
+
+        $client->user()->create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-            ]);
-        $token = JWTAuth::fromUser($user);
+            'password' => Hash::make($request->get('password')),]);
 
+        $user = $client->user;
+
+        $token = JWTAuth::fromUser($client->user);
         return response()->json( new UserResource($user, $token), 201);
     }
     public function getAuthenticatedUser()
