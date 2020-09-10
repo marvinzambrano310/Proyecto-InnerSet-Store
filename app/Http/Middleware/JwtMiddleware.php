@@ -23,13 +23,21 @@ class JwtMiddleware
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (TokenExpiredException $e) {
-            return response()->json(['error' => 'token_expired'], 401);
+            try {
+                $refreshed_token = JWTAuth::refresh(JWTAuth::getToken());
+                $user = JWTAuth::setToken($refreshed_token)->toUser();
+                return response()->json(['message' => 'token_expired', 'refreshed_token' => $refreshed_token], 401);
+            } catch (JWTException $e) {
+                return response()->json([
+                    'message' => 'token_not_refreshed'
+                ], 401);
+            }
         } catch (TokenInvalidException $e) {
-            return response()->json(['error' => 'token_invalid'], 401);
+            return response()->json(['message' => 'token_invalid'], 401);
         } catch (JWTException $e) {
-            return response()->json(['error' => 'token_absent'], 401);
+            return response()->json(['message' => 'token_absent'], 401);
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
         return $next($request);
     }
