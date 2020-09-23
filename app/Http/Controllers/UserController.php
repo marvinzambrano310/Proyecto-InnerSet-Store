@@ -24,7 +24,7 @@ class UserController extends Controller
         } catch (JWTException $e) {
             return response()->json(['message' => 'could_not_create_token'], 500);
         }
-        $user = JWTAuth::user();
+        $user = new UserResource(JWTAuth::user());
         return response()->json(compact('token', 'user'));
     }
     public function register(Request $request){
@@ -32,25 +32,27 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'home_number' => 'required|numeric|min:1|max:60',
-            'store_name' => 'required|string|max:255',
+            'home_number' => 'numeric|min:1|max:60',
+            'store_name' => 'string|max:255',
             'role' => 'required',
             ]);
         //Solo se crean nuevos clientes, no nuevos propietarios
-        if ($validator ->role==User::ROLE_CLIENT){
+        if ($request->role=="ROLE_CLIENT"){
             $userable = Client::create([
                 'home_number' => $request->get('home_number'),
             ]);
         }else{
             $userable = Owner::create([
-                'home_number' => $request->get('store_name'),
+                'store_name' => $request->get('store_name'),
             ]);
         }
 
         $user = $userable->user()->create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),]);
+            'password' => Hash::make($request->get('password')),
+            'role'=>$request->get('role'),]);
+
 
         $token = JWTAuth::fromUser($user);
         return response()->json( new UserResource($user, $token), 201);
