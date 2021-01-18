@@ -21,7 +21,7 @@ class Product extends JsonResource
             'price' => $this->price,
             'image' => $this->image,
             'user' => "api/user".$this->user_id,
-            'category' => "api/categories".$this->category_id,
+            'category' => new Category($this->category)
         ];
     }
 }
