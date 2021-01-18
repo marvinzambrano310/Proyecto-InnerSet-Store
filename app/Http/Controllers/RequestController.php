@@ -20,7 +20,7 @@ class RequestController extends Controller
     public function show (aRequest $request)
     {
         $this->authorize('view', $request);
-        return response()->json(new RequestResource($request), 200);
+        return response()->json(new RequestsuResource($request), 200);
     }
     public function store(Request $request)
     {
