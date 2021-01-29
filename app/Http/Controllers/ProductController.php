@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Resources\Product as ProductResource ;
 use App\Http\Resources\ProductCollection;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProductController extends Controller
@@ -20,34 +22,45 @@ class ProductController extends Controller
     ];
     public function index()
     {
-        return new ProductCollection(Product::paginate(10));
+        return new ProductCollection(Product::all());
     }
     public function show (Product $product)
     {
         return response()->json(new ProductResource($product), 200);
     }
+
+    public function image(Product $product)
+    {
+        return response()->download(public_path(Storage::url($product->image)), $product->name);
+    }
+
     public function store(Request $request)
     {
+        //$this->authorize('create', Article::class);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'stock' => 'required|integer',
             'price' => 'required|numeric',
-            'image' => 'required|image|dimensions:min_width=200,min_height=200',
             'category_id' => 'required|exists:categories,id',
+            'image' => 'required|image|dimensions:min_width=200,min_height=200',
         ], self::$messages);
+
         $product = new Product($request->all());
         $path = $request->image->store('public/products');
-        $product->image = $path;
+        $product->image = 'products/' . basename($path);
         $product->save();
+
         return response()->json(new ProductResource($product), 201);
     }
+
     public function update(Request $request, Product $product)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'stock' => 'required|integer',
             'price' => 'required|numeric',
-            'category_id' => 'required|exists:categories,id',
+            //'category_id' => 'required|exists:categories,id',
         ], self::$messages);
         $product->update($request->all());
         return response()->json($product, 200);

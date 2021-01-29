@@ -25,6 +25,7 @@ class User extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'role'=>$this->role,
             $this->merge($this->userable),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

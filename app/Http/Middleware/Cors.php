@@ -17,8 +17,7 @@ class Cors
     {
         return $next($request)
         ->header('Access-Control-Allow-Origin', 'http://localhost:8100')
-        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
-        ->header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, X-Token-Auth, Authorization');
-
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Requested-With, Content-Type, X-Token-Auth, Authorization');
     }
 }
