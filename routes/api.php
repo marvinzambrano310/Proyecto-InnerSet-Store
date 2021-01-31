@@ -32,6 +32,7 @@ Route::group(['middleware' => ['cors']], function () {
         //product
         Route::get('products', 'ProductController@index');
         Route::get('products/{product}', 'ProductController@show');
+        Route::get('product/{name}','ProductController@searchProduct');
         Route::post('products', 'ProductController@store');
         Route::put('products/{product}', 'ProductController@update');
         Route::delete('products/{product}', 'ProductController@delete');

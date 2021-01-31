@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Resources\Product as ProductResource ;
@@ -28,6 +27,11 @@ class ProductController extends Controller
     {
         return response()->json(new ProductResource($product), 200);
     }
+    public function searchProduct($name)
+    {
+        $products = Product::search("%$name*%")->get();
+        return response()->json(new ProductCollection($products), 200);
+    }
 
     public function image(Product $product)
     {
@@ -49,6 +53,7 @@ class ProductController extends Controller
         $product = new Product($request->all());
         $path = $request->image->store('public/products');
         $product->image = 'products/' . basename($path);
+        $product->setAttribute('name', $request->get('name'));
         $product->save();
 
         return response()->json(new ProductResource($product), 201);
