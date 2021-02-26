@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DetailRequest extends Model
 {
-    protected $fillable = ['quantity','request_id','product_id','final_price'];
+    protected $fillable = ['quantity','product_id','final_price'];
 
     public function request()
     {

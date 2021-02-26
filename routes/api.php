@@ -38,16 +38,16 @@ Route::group(['middleware' => ['cors']], function () {
         Route::delete('products/{product}', 'ProductController@delete');
         //request
         Route::get('requests', 'RequestController@index');
-        Route::get('requests/{request}', 'RequestController@show');
+        Route::get('requests/{arequest}', 'RequestController@show');
         Route::post('requests', 'RequestController@store');
         Route::put('requests/{arequest}', 'RequestController@update');
         Route::delete('requests/{request}', 'RequestController@delete');
         //detail
-        Route::get('details', 'DetailRequestController@index');
-        Route::get('details/{detail}', 'DetailRequestController@show');
-        Route::post('details', 'DetailRequestController@store');
-        Route::put('details/{detail}', 'DetailRequestController@update');
-        Route::delete('details/{detail}', 'DetailRequestController@delete');
+        Route::get('requests/{request}/details', 'DetailRequestController@index');
+        Route::get('requests/{request}/details/{detail}', 'DetailRequestController@show');
+        Route::post('requests/{arequest}/details', 'DetailRequestController@store');
+        /*Route::put('requests/{arequest}/details/{detail}', 'DetailRequestController@update');
+        Route::delete('requests/{request}/details/{detail}', 'DetailRequestController@delete');*/
     });
 });
 

@@ -17,10 +17,10 @@ class RequestController extends Controller
     {
         return new RequestCollection(aRequest::all());
     }
-    public function show (aRequest $request)
+    public function show (aRequest $arequest)
     {
-        $this->authorize('view', $request);
-        return response()->json(new RequestsuResource($request), 200);
+        $this->authorize('view', $arequest);
+        return response()->json(new RequestResource($arequest), 200);
     }
     public function store(Request $request)
     {
