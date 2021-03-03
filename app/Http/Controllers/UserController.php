@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use App\Http\Resources\User as UserResource;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Notifications\SignupActivate;
+use Carbon\Carbon;
+use App\PasswordReset;
+use App\Notifications\PasswordResetRequest;
+use App\Notifications\PasswordResetSuccess;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -46,17 +52,23 @@ class UserController extends Controller
                 'store_name' => $request->get('store_name'),
             ]);
         }
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $random=str_shuffle($permitted_chars);
 
         $user = $userable->user()->create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'role'=>$request->get('role'),]);
-
+            'activation_code'  => $random,
+            'role'=>$request->get('role'),   
+            ]);
+        
+        $user->notify(new SignupActivate($user));
 
         $token = JWTAuth::fromUser($user);
         return response()->json( new UserResource($user, $token), 201);
     }
+
     public function getAuthenticatedUser()
     {
         try {
@@ -88,5 +100,112 @@ class UserController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(["message" => "No se pudo cerrar la sesión."], 500);
         }
+    }
+
+    // aqui la verificacion de correo
+    public function verify($code)
+    {
+        $active = User::where('active', true)->first();
+        $user = User::where('activation_code', $code)->first();
+
+        if ($active && !$user){
+            return response()->json(['message' => 'La cuenta ya esya activa'], 200); 
+        }
+        if (!$user) {
+            return response()->json(['message' => 'El token de activación es inválido'], 404);
+        }
+
+    // After verifying remove token (unnecessary)
+        $user->activation_code = '';
+        $user->active=true;
+        $user->save();
+
+        return $user;
+    }
+
+    public function resend(User $user)
+    {
+        $active = User::where('active', true)->first();
+        $user = User::where('activation_code', $code)->first();
+        
+        if(!$user && $active)
+        {   
+            return response()->json(["message" => 'La cuenta ha sido verificada'], 409);
+        }
+
+        $user->notify(new SignupActivate($user));
+        return response()->json(["message" => 'Se ha reenviado el correo electrónico de validación'], 200);
+    }
+
+    //De aqui hasta abajo el proceso de cambio de clave
+    public function create(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+        ]);
+        $user = User::where('email', $request->email)->first();
+        if (!$user)
+            return response()->json([
+                'message' => 'We can\'t find a user with that e-mail address.'
+            ], 404);
+        
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $random=str_shuffle($permitted_chars);
+
+        $passwordReset = PasswordReset::updateOrCreate(
+            ['email' => $user->email],
+            [
+                'email' => $user->email,
+                'token' => $random,
+            ]
+        );
+        if ($user && $passwordReset)
+            $user->notify(
+                new PasswordResetRequest($passwordReset->token)
+            );
+        return response()->json([
+            'message' => 'We have e-mailed your password reset link!'
+        ]);
+    }
+
+    public function find($token)
+    {
+        $passwordReset = PasswordReset::where('token', $token)->first();
+        if (!$passwordReset)
+        {    
+            return response()->json(['message' => 'This password reset token is invalid.'], 404);
+        }
+        
+        if (Carbon::parse($passwordReset->updated_at)->addMinutes(720)->isPast()) {
+            $passwordReset->delete();
+            return response()->json([
+                'message' => 'This password reset token is invalid.'
+            ], 404);
+        }
+        return response()->json($passwordReset);
+    }
+
+    public function reset(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string|confirmed',
+            'token' => 'required|string'
+        ]);
+        $passwordReset = PasswordReset::where('token', $request->token)->first();
+        if (!$passwordReset)
+            return response()->json([
+                'message' => 'This password reset token is invalid.'
+            ], 404);
+        $user = User::where('email', $request->email)->first();
+        if (!$user)
+            return response()->json([
+                'message' => 'We can\'t find a user with that e-mail address.'
+            ], 404);
+        $user->password = Hash::make($request->password);
+        $user->save();
+        $passwordReset->delete();
+        $user->notify(new PasswordResetSuccess($passwordReset));
+        return response()->json($user);
     }
 }

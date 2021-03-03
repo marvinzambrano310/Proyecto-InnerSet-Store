@@ -16,9 +16,15 @@ use Illuminate\Http\Request;
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //return $request->user();
 Route::group(['middleware' => ['cors']], function () {
-
+    //Rutas para la combio de password 
+    Route::post('users/create', 'UserController@create');
+    Route::get('users/find/{token}', 'UserController@find');
+    Route::post('users/reset', 'UserController@reset');
     Route::post('register', 'UserController@register');
     Route::post('login', 'UserController@authenticate');
+    //verificar correo
+    Route::name('verify')->get('users/verify/{code}', 'UserController@verify');
+    Route::name('resent')->get('users/{user}/resend', 'UserController@resend');
 
     Route::group(['middleware' => ['jwt.verify']], function () {
         Route::get('user', 'UserController@getAuthenticatedUser');
