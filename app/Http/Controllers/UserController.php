@@ -33,6 +33,7 @@ class UserController extends Controller
         $user = new UserResource(JWTAuth::user());
         return response()->json(compact('token', 'user'));
     }
+    
     public function register(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -108,9 +109,6 @@ class UserController extends Controller
         $active = User::where('active', true)->first();
         $user = User::where('activation_code', $code)->first();
 
-        if ($active && !$user){
-            return response()->json(['message' => 'La cuenta ya esya activa'], 200); 
-        }
         if (!$user) {
             return response()->json(['message' => 'El token de activación es inválido'], 404);
         }
@@ -128,7 +126,7 @@ class UserController extends Controller
         $active = User::where('active', true)->first();
         $user = User::where('activation_code', $code)->first();
         
-        if(!$user && $active)
+        if(!$user)
         {   
             return response()->json(["message" => 'La cuenta ha sido verificada'], 409);
         }
