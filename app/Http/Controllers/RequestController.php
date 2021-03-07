@@ -5,6 +5,8 @@ use App\Request as aRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\Request as RequestResource ;
 use App\Http\Resources\RequestCollection;
+use Illuminate\Support\Facades\Auth;
+use JWTAuth;
 
 class RequestController extends Controller
 {
@@ -22,6 +24,15 @@ class RequestController extends Controller
         $this->authorize('view', $arequest);
         return response()->json(new RequestResource($arequest), 200);
     }
+
+    public function requestsByUser()
+    {
+        $user=Auth::user();
+        $requests = $user->request;
+
+        return response()->json($requests, 200);
+    }
+
     public function store(Request $request)
     {
         $this->authorize('create', aRequest::class);

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Request extends Model
 {
-    protected $fillable = ['date','subtotal','type','surcharge','total'];
+    protected $fillable = ['date','subtotal','type','surcharge','total', 'status'];
 
     public static function boot(){
         parent::boot();

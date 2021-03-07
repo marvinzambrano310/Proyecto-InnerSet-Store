@@ -39,6 +39,7 @@ Route::group(['middleware' => ['cors']], function () {
         //request
         Route::get('requests', 'RequestController@index');
         Route::get('requests/{arequest}', 'RequestController@show');
+        Route::get('request/user', 'RequestController@requestsByUser');
         Route::post('requests', 'RequestController@store');
         Route::put('requests/{arequest}', 'RequestController@update');
         Route::delete('requests/{request}', 'RequestController@delete');

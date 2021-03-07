@@ -24,6 +24,7 @@ class Request extends JsonResource
             'type' => $this->type,
             'surcharge' => $this->surcharge,
             'total'=> $this->total,
+            'status' => $this->status,
             'created_at'=>$this->created_at,
         ];
     }

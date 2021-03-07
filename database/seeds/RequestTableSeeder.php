@@ -33,6 +33,7 @@ class RequestTableSeeder extends Seeder
                 'type' => $faker->randomElement(['withdraw','deliver']),
                 'surcharge' => $surcharge,
                 'total' => $total,
+                'status' => $faker->randomElement(['pending','accomplished','retired','delivered'])
                 //'user_id' => $user->id,
             ]);
         }
