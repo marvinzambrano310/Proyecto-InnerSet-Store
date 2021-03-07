@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Providers;
+use App\User;
+use App\Mail\UserCreated;
+use Illuminate\Support\Facades\Mail;
+
 
 use Illuminate\Support\ServiceProvider;
 

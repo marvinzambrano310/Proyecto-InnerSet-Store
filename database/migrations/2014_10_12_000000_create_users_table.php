@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('role')->default(\App\User::ROLE_CLIENT);
+            $table->boolean('active')->default(false);
+            $table->string('activation_code');
             $table->rememberToken();
             $table->timestamps();
         });
