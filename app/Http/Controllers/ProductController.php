@@ -61,12 +61,6 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'stock' => 'required|integer',
-            'price' => 'required|numeric',
-            //'category_id' => 'required|exists:categories,id',
-        ], self::$messages);
         $product->update($request->all());
         return response()->json($product, 200);
     }
