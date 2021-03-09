@@ -26,7 +26,8 @@ class UserTableSeeder extends Seeder
             'email' => 'admin@prueba.com',
             'password' => $password,
             'role' => 'ROLE_ADMIN',
-            'activation_code' => $faker->slug,
+            'active' => true,
+            'activation_code' => ' ',
         ]);
 
         // Generar algunos usuarios para nuestra aplicacion

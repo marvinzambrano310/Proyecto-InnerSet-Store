@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\User;
 
 class Request extends JsonResource
 {
@@ -14,9 +15,11 @@ class Request extends JsonResource
      */
     public function toArray($request)
     {
+        $user=User::where('id', $this->user_id)->first();
         return [
             'id' => $this->id,
-            'user' => "/api/users/" . $this->user_id,
+            //'user' => "/api/users/" . $this->user_id,
+            'user' => $user,
             'date' => $this->date,
             //'detail'=>"/api/details".$this->detail,
             'detail'=>(new DetailRequestCollection($this->detail)),
