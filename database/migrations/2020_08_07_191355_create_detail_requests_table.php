@@ -20,7 +20,7 @@ class CreateDetailRequestsTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
             $table->integer('quantity');
-            $table->double('final_price');
+            $table->double('final_price',8,2);
             $table->timestamps();
         });
     }

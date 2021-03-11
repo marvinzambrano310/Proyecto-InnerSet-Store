@@ -16,10 +16,9 @@ class Request extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => "/api/users/" . $this->user_id,
+            'user' => $this->user_id,
             'date' => $this->date,
-            //'detail'=>"/api/details".$this->detail,
-            'detail'=>(new DetailRequestCollection($this->detail)),
+            'detail'=>new DetailRequestCollection($this->detail),
             'subtotal' => $this->subtotal,
             'type' => $this->type,
             'surcharge' => $this->surcharge,
