@@ -25,6 +25,7 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
-        "browserify-sign": "^4.2.1"
+        "browserify-sign": "^4.2.1",
+        "elliptic": "^6.5.4"
     }
 }
