@@ -32,10 +32,10 @@
 </header>
 <div class="container">
     <h4 style="text-align: center">Reporte de Pedidos</h4>
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-sm table-bordered">
+        <thead class="thead-light">
         <tr>
-            <th scope="col">#</th>
+            <th scope="col">N°</th>
             <th scope="col">Cliente</th>
             <th scope="col">Fecha</th>
             <th scope="col">Subtotal</th>

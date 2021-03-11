@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //return $request->user();
 Route::group(['middleware' => ['cors']], function () {
+
     //Rutas para la combio de password
     Route::post('users/create', 'UserController@create');
     Route::get('users/find/{token}', 'UserController@find');
@@ -57,8 +58,9 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('requests/{arequest}/details', 'DetailRequestController@store');
 
         //pdf
-        Route::get('pdf/requests', 'PDFController@PDFRequests');
-        Route::get('pdf/products', 'PDFController@PDFProducts');
+        Route::get('pdf/requests/{date_start}/{date_end}', 'PDFController@PDFRequests');
+        Route::get('pdf/products/{date_start}/{date_end}', 'PDFController@PDFProducts');
+        Route::get('pdf/stock/', 'PDFController@PDFStock');
     });
 });
 

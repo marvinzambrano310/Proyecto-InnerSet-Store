@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reporte de Productos más Vendidos</title>
+    <title>Reporte de Pedidos</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
@@ -31,31 +31,21 @@
     <h3><strong>Reporte de InnerSet Store</strong></h3>
 </header>
 <div class="container">
-    <h4 style="text-align: center">Reporte de Productos más Vendidos</h4>
+    <h4 style="text-align: center">Stock de Productos</h4>
     <table class="table table-sm table-bordered">
         <thead class="thead-light">
         <tr>
             <th scope="col">N°</th>
-            <th scope="col">Producto</th>
-            <th scope="col">Cantidad Total</th>
-            <th scope="col">Total comprado</th>
+            <th scope="col">Nombre de Producto</th>
+            <th scope="col">Stock</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($quantity as $quant)
+        @foreach($stock as $product)
             <tr>
-                <th scope="row">{{$quant->product_id}}</th>
-                @foreach($products as $product)
-                    @if ($product->id === $quant->product_id)
-                        <td>{{$product->name}}</td>
-                    @endif
-                @endforeach
-                <td>{{$quant->total_quantity}}</td>
-                @foreach($products as $product)
-                    @if ($product->id === $quant->product_id)
-                        <td>{{($quant->total_quantity * $product->price)}}</td>
-                    @endif
-                @endforeach
+                <th scope="row">{{$product->id}}</th>
+                <td>{{$product->name}}</td>
+                <td>{{($product->stock)}}</td>
             </tr>
         @endforeach
         </tbody>
@@ -63,5 +53,4 @@
 </div>
 </body>
 </html>
-
 
