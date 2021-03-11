@@ -14,8 +14,7 @@
                         </div>
                     @endif
 
-                    <a href="{{ route('downloadPDFRequests') }}" class="btn btn-sm btn-primary">Imprimir PDF Pedidos</a>
-                    <a href="{{ route('downloadPDFProducts') }}" class="btn btn-sm btn-secondary">Imprimir PDF Prodcutos</a>
+                    <a href="{{ route('downloadPDFStock') }}" class="btn btn-sm btn-secondary">Imprimir PDF Stock</a>
                 </div>
             </div>
         </div>
