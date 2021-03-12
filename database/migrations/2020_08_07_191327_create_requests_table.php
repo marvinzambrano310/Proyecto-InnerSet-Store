@@ -16,10 +16,10 @@ class CreateRequestsTable extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('date');
-            $table->double('subtotal');
+            $table->double('subtotal',8,2);
             $table->enum('type',['withdraw','deliver']);
-            $table->double('surcharge');
-            $table->double('total');
+            $table->double('surcharge',8,2);
+            $table->double('total',8,2);
             $table->enum('status',['pending','accomplished','retired','delivered']);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');

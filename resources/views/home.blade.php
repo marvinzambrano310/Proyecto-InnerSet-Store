@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Inner Set Store</div>
+                <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,10 +14,7 @@
                         </div>
                     @endif
 
-                    <br>
-                    Ingrese a la App e Inicie Sesión. Se han confirmado todos los cambios !!!
-                    <br>
-                    Saludos, InnerSet
+                    <a href="{{ route('downloadPDFStock') }}" class="btn btn-sm btn-secondary">Imprimir PDF Stock</a>
                 </div>
             </div>
         </div>

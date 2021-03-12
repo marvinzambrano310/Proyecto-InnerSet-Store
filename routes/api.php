@@ -16,12 +16,14 @@ use Illuminate\Http\Request;
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //return $request->user();
 Route::group(['middleware' => ['cors']], function () {
-    //Rutas para la combio de password 
+
+    //Rutas para la combio de password
     Route::post('users/create', 'UserController@create');
     Route::get('users/find/{token}', 'UserController@find');
     Route::post('users/reset', 'UserController@reset');
     Route::post('register', 'UserController@register');
     Route::post('login', 'UserController@authenticate');
+
     //verificar correo
     Route::name('verify')->get('users/verify/{code}', 'UserController@verify');
     Route::name('resent')->get('users/{user}/resend', 'UserController@resend');
@@ -49,12 +51,16 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('requests', 'RequestController@store');
         Route::put('requests/{arequest}', 'RequestController@update');
         Route::delete('requests/{request}', 'RequestController@delete');
+
         //detail
         Route::get('requests/{request}/details', 'DetailRequestController@index');
         Route::get('requests/{request}/details/{detail}', 'DetailRequestController@show');
         Route::post('requests/{arequest}/details', 'DetailRequestController@store');
-        /*Route::put('requests/{arequest}/details/{detail}', 'DetailRequestController@update');
-        Route::delete('requests/{request}/details/{detail}', 'DetailRequestController@delete');*/
+
+        //pdf
+        Route::get('pdf/requests/{date_start}/{date_end}', 'PDFController@PDFRequests');
+        Route::get('pdf/products/{date_start}/{date_end}', 'PDFController@PDFProducts');
+        Route::get('pdf/stock/', 'PDFController@PDFStock');
     });
 });
 

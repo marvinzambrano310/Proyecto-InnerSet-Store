@@ -16,10 +16,7 @@ class DetailRequest extends JsonResource
     {
         return [
             'id' => $this->id,
-            //'request'=>'/api/requets/'. $this->request_id,
-            //'request' => new Request($this->request),
             'product' => new Product($this->product),
-            //'product' =>'/api/products/'. $this->product_id,
             'quantity' => $this->quantity,
             'finalprice' => $this->final_price,
             'created_at' => $this->created_at,

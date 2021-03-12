@@ -8,6 +8,7 @@ use App\Http\Resources\RequestCollection;
 use Illuminate\Support\Facades\Auth;
 use JWTAuth;
 
+
 class RequestController extends Controller
 {
     private static $messages = [
@@ -29,7 +30,6 @@ class RequestController extends Controller
     {
         $user=Auth::user();
         $requests = $user->request;
-
         return response()->json($requests, 200);
     }
 
@@ -64,5 +64,15 @@ class RequestController extends Controller
         $this->authorize('delete', $request);
         $request->delete();
         return response()->json(null, 204);
+    }
+
+    public function download(){
+        $data = [
+            'titulo'=> 'Styde.net'
+        ];
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('vista-pdf', $data);
+        return $pdf->stream('archivo.pdf');
     }
 }
