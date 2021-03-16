@@ -31,7 +31,7 @@
     <h3><strong>Reporte de InnerSet Store</strong></h3>
 </header>
 <div class="container">
-    <h4 style="text-align: center">Reporte de Pedidos</h4>
+    <h4 style="text-align: center">Reporte de Ventas por Cliente</h4>
     <table class="table table-sm table-bordered">
         <thead class="thead-light">
         <tr>
