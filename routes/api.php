@@ -36,7 +36,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::get('categories/{category}', 'CategoryController@show');
         Route::post('categories', 'CategoryController@store');
         Route::put('categories/{category}', 'CategoryController@update');
-        Route::delete('categories/{category}', 'CategoryController@delete');
+        //Route::delete('categories/{category}', 'CategoryController@delete');
         //product
         Route::get('products', 'ProductController@index');
         Route::get('products/{product}', 'ProductController@show');
@@ -51,6 +51,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('requests', 'RequestController@store');
         Route::put('requests/{arequest}', 'RequestController@update');
         Route::delete('requests/{request}', 'RequestController@delete');
+        Route::put('requests/status/{arequest}', 'RequestController@updatestatus');
 
         //detail
         Route::get('requests/{request}/details', 'DetailRequestController@index');

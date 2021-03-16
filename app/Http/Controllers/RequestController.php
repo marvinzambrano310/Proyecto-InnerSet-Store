@@ -15,6 +15,7 @@ class RequestController extends Controller
         'required'=>'El campo :attribute es obligatorio',
         'numeric'=>'El parámetro ingresado en :attribute no es un número',
         'date' => 'El campo :attribute no es una fecha',
+        'status'=> 'El campo :attribute no es una cadena',
     ];
     public function index()
     {
@@ -47,6 +48,7 @@ class RequestController extends Controller
         $request1->save();
         return response()->json(new RequestResource($request1), 201);
     }
+
     public function update (Request $request, aRequest $arequest)
     {
         $this->authorize('update', $arequest);
@@ -59,6 +61,16 @@ class RequestController extends Controller
         $arequest->update($request->all());
         return response()->json($arequest, 200);
     }
+
+    public function updatestatus (Request $request, aRequest $arequest){
+        //$this->autorize('update', $arequest);
+        $request->validate([
+            'status' => 'required|string'
+        ], self::$messages);
+        $arequest->update($request->all());
+        return response()->json($arequest, 200);
+    }
+
     public function delete(aRequest $request)
     {
         $this->authorize('delete', $request);
