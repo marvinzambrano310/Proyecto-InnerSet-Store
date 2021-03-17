@@ -12,10 +12,10 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testConUsuarioNoAutenticado()
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $this->json('GET', 'api/requests')
+            ->assertJson(['Not_authorized'])
+            ->assertStatus(401);
     }
 }
