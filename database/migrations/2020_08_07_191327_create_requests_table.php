@@ -20,7 +20,7 @@ class CreateRequestsTable extends Migration
             $table->enum('type',['withdraw','deliver']);
             $table->double('surcharge',8,2);
             $table->double('total',8,2);
-            $table->enum('status',['pending','accomplished','retired','delivered']);
+            $table->enum('status',['new','pending','accomplished','retired','sent','delivered']);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
             $table->timestamps();

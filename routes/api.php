@@ -28,6 +28,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::name('verify')->get('users/verify/{code}', 'UserController@verify');
     Route::name('resent')->get('users/{user}/resend', 'UserController@resend');
 
+
     Route::group(['middleware' => ['jwt.verify']], function () {
         Route::get('user', 'UserController@getAuthenticatedUser');
         Route::post('logout', 'UserController@logout');
