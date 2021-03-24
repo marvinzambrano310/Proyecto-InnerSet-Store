@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //return $request->user();
+Route::group(['middleware' => ['cors']], function () {
 
     //Rutas para la combio de password
     Route::post('users/create', 'UserController@create');
@@ -61,6 +62,9 @@ use Illuminate\Http\Request;
         Route::get('requests/{request}/details', 'DetailRequestController@index');
         Route::get('requests/{request}/details/{detail}', 'DetailRequestController@show');
         Route::post('requests/{arequest}/details', 'DetailRequestController@store');
+
+        
+    });
 });
 
 
