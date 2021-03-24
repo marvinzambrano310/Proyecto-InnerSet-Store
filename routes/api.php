@@ -28,6 +28,10 @@ Route::group(['middleware' => ['cors']], function () {
     Route::name('verify')->get('users/verify/{code}', 'UserController@verify');
     Route::name('resent')->get('users/{user}/resend', 'UserController@resend');
 
+    //pdf
+    Route::get('pdf/requests/{date_start}/{date_end}', 'PDFController@PDFRequests');
+    Route::get('pdf/products/{date_start}/{date_end}', 'PDFController@PDFProducts');
+    Route::get('pdf/stock/', 'PDFController@PDFStock');
 
     Route::group(['middleware' => ['jwt.verify']], function () {
         Route::get('user', 'UserController@getAuthenticatedUser');
@@ -59,10 +63,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::get('requests/{request}/details/{detail}', 'DetailRequestController@show');
         Route::post('requests/{arequest}/details', 'DetailRequestController@store');
 
-        //pdf
-        Route::get('pdf/requests/{date_start}/{date_end}', 'PDFController@PDFRequests');
-        Route::get('pdf/products/{date_start}/{date_end}', 'PDFController@PDFProducts');
-        Route::get('pdf/stock/', 'PDFController@PDFStock');
+        
     });
 });
 
