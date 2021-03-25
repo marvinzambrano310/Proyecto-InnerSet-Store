@@ -32,6 +32,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('pdf/requests/{date_start}/{date_end}', 'PDFController@PDFRequests');
     Route::get('pdf/products/{date_start}/{date_end}', 'PDFController@PDFProducts');
     Route::get('pdf/stock/', 'PDFController@PDFStock');
+    Route::get('products', 'ProductController@index');
 
     Route::group(['middleware' => ['jwt.verify']], function () {
         Route::get('user', 'UserController@getAuthenticatedUser');
@@ -43,7 +44,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::put('categories/{category}', 'CategoryController@update');
         //Route::delete('categories/{category}', 'CategoryController@delete');
         //product
-        Route::get('products', 'ProductController@index');
+        //Route::get('products', 'ProductController@index');
         Route::get('products/{product}', 'ProductController@show');
         Route::get('product/{name}','ProductController@searchProduct');
         Route::post('products', 'ProductController@store');
