@@ -118,7 +118,7 @@ class UserController extends Controller
         $user->active=true;
         $user->save();
 
-        return $user;
+        return view('confirm');
     }
 
     public function resend(User $user)

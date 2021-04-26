@@ -44,7 +44,7 @@
 {{ $salutation }}
 @else
 @lang('Saludos'),<br>
-@lang('innerSet Store')
+@lang('InnerSet Store')
 @endif
 
 {{-- Subcopy --}}
